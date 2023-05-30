@@ -2,11 +2,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def pourcentage_couches_par_phases(nbr_phases):
+    """"
+    Fonction qui demande à l'utilisateur quel pourcentage de couche il veut attribuer à chaque phase.
+
+    Argument :
+    nbr_phases : le nombre de phases total pour le projet
+
+    Retour :
+    pourcentages_couches_par_phases : liste des poucentages de couches pour chaque phases
+    """
+
+    # Initialisation d'une liste pour stocker les pourcentages de couches par phases
     pourcentages_couches_par_phases = []
+    # Initialisation d'une variable qui fait la somme des pourcentages attribué à chaque phase au fur et à mesure
     somme_pourcentage = 0
+    # Boucle qui demande à l'utilisateur de renseigner le pourcentage de couche pour chaque phase
     for i in range (0,nbr_phases-1,1) :
         #On demande le poucentage pour chaque phases
         pourcentage = int(input("Renseignez le poucentage de couches pour la phase  N°{} : ".format(i+1)))
+        #On vérifie que l'utilisateur rentre bien des pourcentages cohérents
+        if poucentage >= 100 :
+            somme_pourcentage = somme_pourcentage-pourcentage
+            pourcentage = int(input("Merci de renseigner un pourcentage inférieur ou égale à 100 pour la phase N°{} : ".format(i+1)))
         somme_pourcentage += pourcentage
         # On ajoute ce pourcentage à un tableau qui les contiendra tous
         pourcentages_couches_par_phases.append(pourcentage)
@@ -15,18 +32,33 @@ def pourcentage_couches_par_phases(nbr_phases):
     return pourcentages_couches_par_phases
 
 def nombre_couches_par_phases(nbr_phases, pourcentages,nbr_total_couches) :
+    """
+    Fonction qui calcule le nombre de couches pour chaque phases
+    :param nbr_phases: nombre total de phases du projet
+    :param pourcentages: Liste contenant les pourcentages de couches par phases (obtenus avec la fonction pourcentage_couches_par_phases)
+    :param nbr_total_couches: nombre total de couches que possède le projet
+    :return nbr_couches : liste du nombre de couches pour chaque phase
+    """
+    # Initialisation de liste du nombre de couches par phases
     nbr_couches = []
+    # On boucle par rapport au nombre de phases totales
     for i in range (0,nbr_phases,1) :
         nbr_couches_par_phases = round(nbr_total_couches*pourcentages[i]/100)
         nbr_couches.append(nbr_couches_par_phases)
     return nbr_couches
 
 def calculer_nombre_couche_total(g_code_entree):
+    """
+    FOnction qui récupère l'information dans le g_code du nombre total de couche du projet
+    :param g_code_entree: Fichier G-code
+    :return: Nombre de couche total du projet
+    """
     with open(g_code_entree,'r') as g_code :
         lignes = g_code.readlines()
-
+    # Variable qui compte le nombre de couches
     nb_couches = 0
     for ligne in lignes:
+        # Toutes les lignes qui commencent par 'LAYER' correspondent à une nouvelle couche
         if ligne.startswith(';LAYER'):
             nb_couches += 1
     print("Le G_code possède",nb_couches,"couches")
@@ -34,6 +66,13 @@ def calculer_nombre_couche_total(g_code_entree):
 
 
 def vitesses_phases(nbr_phases,nbr_couches):
+    """
+    Fonction qui calcule l'évolution de la vitesse par rapport au nombre de couches
+    :param nbr_phases: Nombre total de phases du projet
+    :param nbr_couches: Nombre total de couches du projet
+    :return vitesse: liste des vitesses pour chaque couche
+    """
+    # Initialisation des lis
     vitesses_phases = []
     vitesses = []
     # On demande d'abord à l'utilisateur d'indiquer la vitesse de départ
