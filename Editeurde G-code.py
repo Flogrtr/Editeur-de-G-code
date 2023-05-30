@@ -151,7 +151,7 @@ def modification_gcode(chemin_fichier,nouvelles_vitesses,nouvelles_temperatures,
                 g_code.write(nouvelle_ligne)
 
 
-            elif ligne.startswith(';LAYER:'):
+            elif ligne.startswith(';LAYER:') or ligne.startswith(';LAYER_C'):
                 i += 1
                 g_code.write(ligne)
             else :
@@ -178,7 +178,7 @@ def repasser_sans_extrusion(chemin_fichier):
                     if valeur.startswith('E') and float(valeur[1:])==0 and position_x_a_reutiliser!=[] and position_y_a_reutiliser!=[]:
                         position_x_a_reutiliser.pop()
                         position_y_a_reutiliser.pop()
-            elif ligne.startswith(';LAYER'):
+            elif ligne.startswith(';LAYER') or ligne.startswith(';LAYER_C'):
                 if j%2==0: #inversion des couches
                     position_x_a_reutiliser=position_x_a_reutiliser[::-1]
                     position_y_a_reutiliser=position_y_a_reutiliser[::-1]
