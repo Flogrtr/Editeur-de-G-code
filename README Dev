@@ -19,6 +19,8 @@ pourcentage_moyenne_tableau(tableau): Cette fonction calcule le pourcentage de c
 
 pourcentage_gonflement_extrudat(tableau_1, tableau_2): Cette fonction calcule le pourcentage de gonflement de l'extrudat entre deux tableaux en utilisant la moyenne des pourcentages. Elle retourne une liste contenant les pourcentages de gonflement.
 
+maximum-absolu(tabelau_1, tableau_2): Cette fonction permet de construire un tableau contenant la valeur absolue maximale de deux autres tableaux qui sont pris en entrée. Elle retourne un seul tableau.
+
 pourcentage_correction_appliquee(tableau_1, tableau_2): Cette fonction applique une correction sur les pourcentages de gonflement en utilisant un coefficient de correction fourni par l'utilisateur. Elle retourne une liste contenant les pourcentages de correction appliqués.
 
 modification_gcode(chemin_fichier, nouvelles_vitesses, nouvelles_temperatures, deplacement_x, deplacement_y, pourcentage_extrusion): Cette fonction effectue les modifications nécessaires dans le fichier G-code en remplaçant les vitesses, les températures et en appliquant les corrections d'extrusion. Elle crée un nouveau fichier G-code avec les modifications et retourne le chemin du fichier de sortie.
