@@ -177,7 +177,7 @@ def modification_gcode(chemin_fichier,nouvelles_vitesses,nouvelles_temperatures,
             else :
                 g_code.write(ligne)
     #chemin_sortie = "chemin_vers_fichier_sortie.gcode"
-    return "chemin_sortie.gcode"
+    return "cube_intermediaire.gcode"
 
 ###Fonction suplémentaire (rechauffer)
 def repasser_sans_extrusion(chemin_fichier):
@@ -209,7 +209,7 @@ def repasser_sans_extrusion(chemin_fichier):
                 position_y_a_reutiliser = []
             g_code_sortie.write(ligne)
     #chemin_fichier_sortie = "cubefinal.gcode"
-    return "chemin_fichier_sortie.gcode"
+    return "cubefinal.gcode"
 
 # Mains
 def main():
