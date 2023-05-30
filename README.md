@@ -1,4 +1,5 @@
 # Editeur de G-code Manuel utilisateur
+Ce code est destiné à la gestion des paramètres d'impression en fonction du nombre de couches et des différentes phases d'un projet d'impression 3D. Il permet de calculer le nombre de couches par phase, d'obtenir les vitesses et les températures correspondantes, de modifier un fichier G-code avec les nouvelles valeurs et de générer un fichier de sortie.
 
 ## Importation des bibliothèques :
 Assurez-vous d'avoir installé les bibliothèques nécessaires : numpy et matplotlib.pyplot.
@@ -12,7 +13,7 @@ Utilisez les différentes fonctions fournies par le programme pour obtenir les p
 Stockez ces valeurs dans des variables appropriées.
 
 ## Application des modifications :
-Utilisez la fonction modification_gcode() en passant les paramètres appropriés pour modifier le fichier G-code. Par exemple :
+Utilisez la fonction modification_gcode() en passant les paramètres appropriés (les vitesses, les températures, les coordonnées et l'extrusion selon les nouvelles valeurs spécifiées) pour modifier le fichier G-code. 
 
 ## Résultats :
 La fonction modification_gcode() renverra le chemin vers le fichier de sortie modifié.
