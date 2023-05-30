@@ -165,6 +165,7 @@ def repasser_sans_extrusion(chemin_fichier):
         lignes = g_code.readlines()
         position_x_a_reutiliser = []
         position_y_a_reutiliser = []
+        j=0 #initiation d'un compteur pour l'inversion des couches de remplissage
     with open("chemin_fichier_sortie.gcode", 'w') as g_code_sortie:
         for ligne in lignes:
             if ligne.startswith('G1'):
@@ -178,6 +179,10 @@ def repasser_sans_extrusion(chemin_fichier):
                         position_x_a_reutiliser.pop()
                         position_y_a_reutiliser.pop()
             elif ligne.startswith(';LAYER'):
+                if j%2==0: #inversion des couches 
+                    position_x_a_reutiliser=position_x_a_reutiliser[::-1]
+                    position_y_a_reutiliser=position_y_a_reutiliser[::-1]
+                j+=1 # iteration du compteur d'inversion
                 for i in range(len(position_x_a_reutiliser)):
                     g_code_sortie.write(f'G0 X{position_x_a_reutiliser[i]} Y{position_y_a_reutiliser[i]}\n')
                 position_x_a_reutiliser = []
