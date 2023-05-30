@@ -103,6 +103,15 @@ def calculer_moyenne(tableau):
     moyenne = somme / len(tableau)
     return moyenne
 
+def maximum_absolu(tableau_1, tableau_2):
+    resultat = []
+    for i in range(len(tableau_1)):
+        valeur_1 = abs(tableau_1[i])
+        valeur_2 = abs(tableau_2[i])
+        valeur_max = max(valeur_1, valeur_2)
+        resultat.append(valeur_max)
+    return resultat
+
 def pourcentage_moyenne_tableau (tableau):
     moyenne_tableau = calculer_moyenne(tableau)
     pourcentage_moyenne_tableau = [0]*len(tableau)
@@ -118,17 +127,28 @@ def pourcentage_gonflement_extrudat (tableau_1, tableau_2) :
         pourcentage_gonflement_extrudat[i] = (-pourcentage_moyenne_tableau(tableau_1)[i] + pourcentage_moyenne_tableau(tableau_2)[i])/2
     return (pourcentage_gonflement_extrudat)
 
-def pourcentage_correction_appliquee (tableau_1, tableau_2) :
-    coefficient_correction = int(input('Entrez la valeur du coefficeint correctif de l\'extrudat souhaité :'))
+def pourcentage_correction_appliquee (tableau_1, tableau_2) : #tableau 1 correspond à la temp et tableau 2 correspond à la vitesse
+    coefficient_correction = int(input('Entrez la valeur du coefficeint correctif de l\'extrudat souhaité de la sorte [-X%;+X%] : '))
     valeur_min = min(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
     valeur_max = max(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
-    max_val_abs = max(abs(valeur_max),abs(valeur_min))
-    pourcentage_extrusion = [0]*len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
+    max_val_abs = max(abs(valeur_max), abs(valeur_min))
+    pourcentage_extrusion_min = [0]*len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
+    pourcentage_extrusion_max = [0]*len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
+    pourcentage_extrusion_final = [0]*len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
     i = 0
-    if max_val_abs!=0:
-        for i in range(len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))) :
-            pourcentage_extrusion[i] = pourcentage_gonflement_extrudat(tableau_1, tableau_2)[i]*coefficient_correction/(max_val_abs*100)
-    return (pourcentage_extrusion)
+    for i in range(len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))) :
+        pourcentage_extrusion_min[i] = pourcentage_gonflement_extrudat(tableau_1, tableau_2)[i]* (-coefficient_correction) / abs((valeur_min*100))
+    for i in range(len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))):
+        pourcentage_extrusion_max[i] = pourcentage_gonflement_extrudat(tableau_1, tableau_2)[i]*coefficient_correction / (abs(valeur_max*100))
+    print(pourcentage_extrusion_max)
+    print(pourcentage_extrusion_min)
+    for i in range(len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))):
+        if pourcentage_extrusion_max[i] == coefficient_correction/100 or pourcentage_extrusion_min[i] == coefficient_correction/100 :
+            pourcentage_extrusion_final[i] = coefficient_correction/100
+        elif max_val_abs!=0:
+            pourcentage_extrusion_final[i] = maximum_absolu(pourcentage_extrusion_max, pourcentage_extrusion_min)[i]
+    return (pourcentage_extrusion_final)
+
 
 ###modification du code
 def modification_gcode(chemin_fichier,nouvelles_vitesses,nouvelles_temperatures,deplacement_x,deplacement_y,pourcentage_extrusion):
@@ -190,13 +210,13 @@ def modification_gcode(chemin_fichier,nouvelles_vitesses,nouvelles_temperatures,
                 g_code.write(nouvelle_ligne)
 
 
-            elif ligne.startswith(';LAYER:'):
+            elif ligne.startswith(';LAYER:') or ligne.startswith(';LAYER_C'):
                 i += 1
                 g_code.write(ligne)
             else :
                 g_code.write(ligne)
     #chemin_sortie = "chemin_vers_fichier_sortie.gcode"
-    return "chemin_sortie.gcode"
+    return "cube_intermediaire.gcode"
 
 ###Fonction suplémentaire (rechauffer)
 def repasser_sans_extrusion(chemin_fichier):
@@ -217,8 +237,8 @@ def repasser_sans_extrusion(chemin_fichier):
                     if valeur.startswith('E') and float(valeur[1:])==0 and position_x_a_reutiliser!=[] and position_y_a_reutiliser!=[]:
                         position_x_a_reutiliser.pop()
                         position_y_a_reutiliser.pop()
-            elif ligne.startswith(';LAYER'):
-                if j%2==0: #inversion des couches 
+            elif ligne.startswith(';LAYER') or ligne.startswith(';LAYER_C'):
+                if j%2==0: #inversion des couches
                     position_x_a_reutiliser=position_x_a_reutiliser[::-1]
                     position_y_a_reutiliser=position_y_a_reutiliser[::-1]
                 j+=1 # iteration du compteur d'inversion
@@ -228,7 +248,7 @@ def repasser_sans_extrusion(chemin_fichier):
                 position_y_a_reutiliser = []
             g_code_sortie.write(ligne)
     #chemin_fichier_sortie = "cubefinal.gcode"
-    return "chemin_fichier_sortie.gcode"
+    return "cubefinal.gcode"
 
 # Mains
 def main():
@@ -245,8 +265,8 @@ def main():
     # Fonction qui calcule le nombre de couches par phases
     nbr_couches = nombre_couches_par_phases(nbr_phases,pourcentage,nbr_couches_total)
     #Deplacement
-    deplacement_x=int(input('Renseignez le déplacement en x (en mm)'))
-    deplacement_y=int(input('Renseignez le déplacement en y (en mm)'))
+    deplacement_x=int(input('Renseignez le déplacement en x (en mm) : '))
+    deplacement_y=int(input('Renseignez le déplacement en y (en mm) : '))
     # Fonction qui demande à l'utilisateur de rentrer les vitesses qu'il souhaite pour chaque phases
     nouvelles_vitesses = vitesses_phases(nbr_phases, nbr_couches)
     print(len(nouvelles_vitesses))
