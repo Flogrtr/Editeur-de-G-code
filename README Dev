@@ -1,30 +1,43 @@
 # Editeur de G-code Manuel Developpeur
 
-Importation des bibliothèques :
+## Importation des bibliothèques :
 Assurez-vous d'avoir installé les bibliothèques nécessaires : numpy et matplotlib.pyplot.
 
-pourcentage_couches_par_phases(nbr_phases): Cette fonction permet de demander à l'utilisateur de saisir le pourcentage de couches pour chaque phase du projet. Elle retourne une liste contenant les pourcentages de couches par phase.
+## Fontion 'pourcentage_couches_par_phases(nbr_phases)'
+Cette fonction permet de demander à l'utilisateur de saisir le pourcentage de couches pour chaque phase du projet. Elle retourne une liste contenant les pourcentages de couches par phase.
 
-nombre_couches_par_phases(nbr_phases, pourcentages, nbr_total_couches): Cette fonction calcule le nombre de couches pour chaque phase en fonction des pourcentages de couches et du nombre total de couches. Elle retourne une liste contenant le nombre de couches par phase.
+## Fonction 'nombre_couches_par_phases(nbr_phases, pourcentages, nbr_total_couches)'
+Cette fonction calcule le nombre de couches pour chaque phase en fonction des pourcentages de couches et du nombre total de couches. Elle retourne une liste contenant le nombre de couches par phase.
 
-calculer_nombre_couche_total(g_code_entree): Cette fonction calcule le nombre total de couches d'un fichier G-code en comptant le nombre de lignes commençant par ";LAYER". Elle affiche également le nombre de couches et le retourne.
+## Fonction 'calculer_nombre_couche_total(g_code_entree)'
+Cette fonction calcule le nombre total de couches d'un fichier G-code en comptant le nombre de lignes commençant par ";LAYER". Elle affiche également le nombre de couches et le retourne.
 
-vitesses_phases(nbr_phases, nbr_couches): Cette fonction demande à l'utilisateur de saisir les vitesses à atteindre à la fin de chaque phase du projet. Elle retourne une liste contenant les vitesses correspondantes à chaque couche.
+## Fonction 'vitesses_phases(nbr_phases, nbr_couches)'
+Cette fonction demande à l'utilisateur de saisir les vitesses à atteindre à la fin de chaque phase du projet. Elle retourne une liste contenant les vitesses correspondantes à chaque couche.
 
-temperature_phases(nbr_phases, nbr_couches): Cette fonction demande à l'utilisateur de saisir les températures à atteindre à la fin de chaque phase du projet. Elle retourne une liste contenant les températures correspondantes à chaque couche.
+## Fonction 'temperature_phases(nbr_phases, nbr_couches)'
+Cette fonction demande à l'utilisateur de saisir les températures à atteindre à la fin de chaque phase du projet. Elle retourne une liste contenant les températures correspondantes à chaque couche.
 
-calculer_moyenne(tableau): Cette fonction calcule la moyenne des valeurs d'un tableau.
+## Fonction 'calculer_moyenne(tableau)'
+Cette fonction calcule la moyenne des valeurs d'un tableau.
 
-pourcentage_moyenne_tableau(tableau): Cette fonction calcule le pourcentage de chaque valeur du tableau par rapport à la moyenne du tableau. Elle retourne une liste contenant les pourcentages correspondants.
+## Fonction 'pourcentage_moyenne_tableau(tableau)'
+Cette fonction calcule le pourcentage de chaque valeur du tableau par rapport à la moyenne du tableau. Elle retourne une liste contenant les pourcentages correspondants.
 
-pourcentage_gonflement_extrudat(tableau_1, tableau_2): Cette fonction calcule le pourcentage de gonflement de l'extrudat entre deux tableaux en utilisant la moyenne des pourcentages. Elle retourne une liste contenant les pourcentages de gonflement.
+## Fonction 'pourcentage_gonflement_extrudat(tableau_1, tableau_2)'
+Cette fonction calcule le pourcentage de gonflement de l'extrudat entre deux tableaux en utilisant la moyenne des pourcentages. Elle retourne une liste contenant les pourcentages de gonflement.
 
-maximum-absolu(tabelau_1, tableau_2): Cette fonction permet de construire un tableau contenant la valeur absolue maximale de deux autres tableaux qui sont pris en entrée. Elle retourne un seul tableau.
+## Fonction 'maximum-absolu(tabelau_1, tableau_2)'
+Cette fonction permet de construire un tableau contenant la valeur absolue maximale de deux autres tableaux qui sont pris en entrée. Elle retourne un seul tableau.
 
-pourcentage_correction_appliquee(tableau_1, tableau_2): Cette fonction applique une correction sur les pourcentages de gonflement en utilisant un coefficient de correction fourni par l'utilisateur. Elle retourne une liste contenant les pourcentages de correction appliqués.
+## Fonction 'pourcentage_correction_appliquee(tableau_1, tableau_2)'
+Cette fonction applique une correction sur les pourcentages de gonflement en utilisant un coefficient de correction fourni par l'utilisateur. Elle retourne une liste contenant les pourcentages de correction appliqués.
 
-modification_gcode(chemin_fichier, nouvelles_vitesses, nouvelles_temperatures, deplacement_x, deplacement_y, pourcentage_extrusion): Cette fonction effectue les modifications nécessaires dans le fichier G-code en remplaçant les vitesses, les températures et en appliquant les corrections d'extrusion. Elle crée un nouveau fichier G-code avec les modifications et retourne le chemin du fichier de sortie.
+## Fonction 'modification_gcode(chemin_fichier, nouvelles_vitesses, nouvelles_temperatures, deplacement_x, deplacement_y, pourcentage_extrusion)'
+Cette fonction effectue les modifications nécessaires dans le fichier G-code en remplaçant les vitesses, les températures et en appliquant les corrections d'extrusion. Elle crée un nouveau fichier G-code avec les modifications et retourne le chemin du fichier de sortie.
 
-repasser_sans_extrusion(chemin_fichier): Cette fonction permet de repasser sur le G-code sans extrusion, en inversant les couches de remplissage. Elle crée un nouveau fichier G-code avec les modifications et retourne le chemin du fichier de sortie.
+## Fonction 'repasser_sans_extrusion(chemin_fichier)'
+Cette fonction permet de repasser sur le G-code sans extrusion, en inversant les couches de remplissage. Elle crée un nouveau fichier G-code avec les modifications et retourne le chemin du fichier de sortie.
 
-maint(): Fonction qui récupère les donnnées renseignées par l'utilisateur et qui utilise toutes les fonctions afin de les cadencer et de les ordonner dans le bon ordre pour récupérer le fichier final.
+## Fonction 'maint()'
+Fonction qui récupère les donnnées renseignées par l'utilisateur et qui utilise toutes les fonctions afin de les cadencer et de les ordonner dans le bon ordre pour récupérer le fichier final.
