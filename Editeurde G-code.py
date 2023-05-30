@@ -179,7 +179,7 @@ def repasser_sans_extrusion(chemin_fichier):
                         position_x_a_reutiliser.pop()
                         position_y_a_reutiliser.pop()
             elif ligne.startswith(';LAYER'):
-                if j%2==0: #inversion des couches 
+                if j%2==0: #inversion des couches
                     position_x_a_reutiliser=position_x_a_reutiliser[::-1]
                     position_y_a_reutiliser=position_y_a_reutiliser[::-1]
                 j+=1 # iteration du compteur d'inversion
