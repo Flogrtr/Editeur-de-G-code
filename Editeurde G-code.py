@@ -21,7 +21,7 @@ def pourcentage_couches_par_phases(nbr_phases):
         #On demande le poucentage pour chaque phases
         pourcentage = int(input("Renseignez le poucentage de couches pour la phase  N°{} : ".format(i+1)))
         #On vérifie que l'utilisateur rentre bien des pourcentages cohérents
-        if poucentage >= 100 :
+        if pourcentage >= 100 :
             somme_pourcentage = somme_pourcentage-pourcentage
             pourcentage = int(input("Merci de renseigner un pourcentage inférieur ou égale à 100 pour la phase N°{} : ".format(i+1)))
         somme_pourcentage += pourcentage
@@ -158,10 +158,10 @@ def modification_gcode(chemin_fichier,nouvelles_vitesses,nouvelles_temperatures,
         lignes = g_code.readlines()
 
     #Écriture des nouvelles vitesses dans le G-code
-    with open("chemin_sortie.gcode",'w') as g_code :
+    with open("cube_intermediaire.gcode",'w') as g_code :
         i = -1
         for ligne in lignes :
-            print(i)
+
             if ligne.startswith('G1') :
 
                 #On extrait d'abord la valeur de la vitesse d'impression
@@ -225,7 +225,7 @@ def repasser_sans_extrusion(chemin_fichier):
         position_x_a_reutiliser = []
         position_y_a_reutiliser = []
         j=0 #initiation d'un compteur pour l'inversion des couches de remplissage
-    with open("chemin_fichier_sortie.gcode", 'w') as g_code_sortie:
+    with open("cubefinal.gcode", 'w') as g_code_sortie:
         for ligne in lignes:
             if ligne.startswith('G1'):
                 valeurs = ligne.split()
