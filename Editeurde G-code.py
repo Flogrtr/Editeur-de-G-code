@@ -98,53 +98,77 @@ def temperature_phases(nbr_phases,nbr_couches):
         temperatures+=temp.tolist()
     return temperatures
 ### Calcul extrusion
+# Fonction  qui prend un tableau en entrée et qui retourne un la valeur moyenne des valeurs du tableau
 def calculer_moyenne(tableau):
     somme = sum(tableau)
     moyenne = somme / len(tableau)
     return moyenne
 
+# Fonction qui prend deux tableaux en entrée et qui retourne un seul tableau contenant la valeur maximale entre les valeurs absolues des deux tableaux
 def maximum_absolu(tableau_1, tableau_2):
     resultat = []
     for i in range(len(tableau_1)):
         valeur_1 = abs(tableau_1[i])
         valeur_2 = abs(tableau_2[i])
+        # Compare les deux valeurs absolues des valeurs des deux tableaux et conserve la valeur maximale
         valeur_max = max(valeur_1, valeur_2)
+        # Ajoute la valeur dans le tableau resultat qui sera retourné
         resultat.append(valeur_max)
     return resultat
 
+# Fonction qui prend un tableau en entrée et qui retourne un tableau contenant la correspondance en % par rapport à la moyenne des valeurs du tableau
 def pourcentage_moyenne_tableau (tableau):
+    # Calcule la moyenne du tableau
     moyenne_tableau = calculer_moyenne(tableau)
+    # Création du tableau dans lequel les valeurs seront écrites
     pourcentage_moyenne_tableau = [0]*len(tableau)
     i = 0
     for i in range(len(tableau)) :
+        # Calcul permettant d'obtenir le pourcentage par rapport à la moyenne de la valeur i du tableau mis en entrée
         pourcentage_moyenne_tableau[i] = 100*tableau[i]/moyenne_tableau
     return (pourcentage_moyenne_tableau)
 
+# Fonction qui prend deux tableaux en entrée et qui retourne un tableau contenant le pourcentage du gonflement à l'extrudat.
+# Attention : Il est important de mettre en tableau_1 le tableau correpsondant à celui de la température et en tableau_2 celui correspondant à celui de la vitesse.
 def pourcentage_gonflement_extrudat (tableau_1, tableau_2) :
+    # Création du tableau dans lequel les valeurs de le pourcentage du gonflement à l'extrudat seront insérées
     pourcentage_gonflement_extrudat = [0]*len(tableau_1)
     i = 0
     for i in range(len(tableau_1)) :
+        # Calcul permettant d'obtenur le pourcentage du gonflement à l'extrudat à partir des valeurs des deux tableaux de température et de vitesse.
         pourcentage_gonflement_extrudat[i] = (-pourcentage_moyenne_tableau(tableau_1)[i] + pourcentage_moyenne_tableau(tableau_2)[i])/2
     return (pourcentage_gonflement_extrudat)
 
+# Fonction qui prend deux tableaux en entrée et qui retourne un tableau contenant le pourcetnage du coefficient de correction a sur ou sous extruder.
+# Attention : Il est important de mettre en tableau_1 le tableau correpsondant à celui de la température et en tableau_2 celui correspondant à celui de la vitesse.
 def pourcentage_correction_appliquee (tableau_1, tableau_2) : #tableau 1 correspond à la temp et tableau 2 correspond à la vitesse
+    # Demande à l'utilisateur de rentrer la valeur du coefficient correctif de l'extrudat souhaité.
     coefficient_correction = int(input('Entrez la valeur du coefficeint correctif de l\'extrudat souhaité de la sorte [-X%;+X%] : '))
+    # Calcul le minimum du pourcentage du gonflement à l'extrudat.
     valeur_min = min(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
+    # Calcul le maximum du pourcentage du gonflement à l'extrudat.
     valeur_max = max(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
+    # Retiens la valeur maximale entre la valeur absolue du minimum et du maximum
     max_val_abs = max(abs(valeur_max), abs(valeur_min))
+    # Création du tableau dans lequel seront insérées les valeurs du pourcentage de sur ou sous extrusion à appliquer par rapport au minimum.
     pourcentage_extrusion_min = [0]*len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
+    # Création du tableau dans lequel seront insérées les valeurs du pourcentage de sur ou sous extrusion à appliquer par rapport au maximum.
     pourcentage_extrusion_max = [0]*len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
+    # Création du tableau dans lequel seront insérées les valeurs du pourcentage de sur ou sous extrusion à appliquer dans le meilleur des cas.
+    # C'est à dire la plus grande valeur entre la valeur absolue entre le minimum et le maximum.
     pourcentage_extrusion_final = [0]*len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))
     i = 0
     for i in range(len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))) :
+        # Calcul les valeurs par rapport au minimum à insérer dans le tableau à partir des deux tableaux de vitesse et de température.
         pourcentage_extrusion_min[i] = pourcentage_gonflement_extrudat(tableau_1, tableau_2)[i]* (-coefficient_correction) / abs((valeur_min*100))
     for i in range(len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))):
+        # Calcul les valeurs par rapport au maximum à insérer dans le tableau à partir des deux tableaux de vitesse et de température.
         pourcentage_extrusion_max[i] = pourcentage_gonflement_extrudat(tableau_1, tableau_2)[i]*coefficient_correction / (abs(valeur_max*100))
-    print(pourcentage_extrusion_max)
-    print(pourcentage_extrusion_min)
     for i in range(len(pourcentage_gonflement_extrudat(tableau_1, tableau_2))):
+        # Condition pour que la valeurs ne dépasse pas l'intervalle saisi par l'utilisateur.
         if pourcentage_extrusion_max[i] == coefficient_correction/100 or pourcentage_extrusion_min[i] == coefficient_correction/100 :
             pourcentage_extrusion_final[i] = coefficient_correction/100
+            # Condition qui permet de prendre la plus grande valeur entre la valeur absolue entre le minimum et le maximum si la valeur maximale est différente de 0..
         elif max_val_abs!=0:
             pourcentage_extrusion_final[i] = maximum_absolu(pourcentage_extrusion_max, pourcentage_extrusion_min)[i]
     return (pourcentage_extrusion_final)
